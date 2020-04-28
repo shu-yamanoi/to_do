@@ -7,7 +7,7 @@
       <ul>
         <li v-for="todo in todos" :key="todo.id">
           <div class="todoList">
-            <div class="todoDeleteButton" @click="deleteTodoHandle(todo.state, todo.id)">
+            <div class="todoDeleteButton" @click="deleteTodoHandle(todo.status, todo.id)">
               ×
             </div>
             <div class="todoTitle">
@@ -16,7 +16,7 @@
             <div :class="priorityClass(todo.priority)">
               {{ todo.priority }}
             </div>
-            <div class="toDoing" @click="toNextState(todo.state, todo.id)">
+            <div class="toDoing" @click="toNextStatus(todo.status, todo.id)">
               →
             </div>
           </div>
@@ -31,7 +31,7 @@
       <ul>
         <li v-for="doing in doings" :key="doing.id">
           <div class="todoList">
-            <div class="doingDeleteButton" @click="deleteTodoHandle(doing.state, doing.id)">
+            <div class="doingDeleteButton" @click="deleteTodoHandle(doing.status, doing.id)">
               ×
             </div>
             <div class="todoTitle">
@@ -40,7 +40,7 @@
             <div :class="priorityClass(doing.priority)">
               {{ doing.priority }}
             </div>
-            <div class="toDone" @click="toNextState(doing.state, doing.id)">
+            <div class="toDone" @click="toNextStatus(doing.status, doing.id)">
               →
             </div>
           </div>
@@ -54,7 +54,7 @@
       <ul>
         <li v-for="done in dones" :key="done.id">
           <div class="todoList">
-            <div class="doneDeleteButton" @click="deleteTodoHandle(done.state, done.id)">
+            <div class="doneDeleteButton" @click="deleteTodoHandle(done.status, done.id)">
               ×
             </div>
             <div class="todoTitle">
@@ -87,17 +87,17 @@ import New from './New.vue'
 })
 export default class Home extends Vue {
 
-  toNextState(state: 'TODO' | 'DOING', id: number) {
+  toNextStatus(status: 'TODO' | 'DOING', id: number) {
     this.$store.dispatch('ToNextState', {
-      state: state,
+      status: status,
       id: id
     })
   }
 
-  deleteTodoHandle(state: 'TODO' | 'DOING' | 'DONE', id: number) {
+  deleteTodoHandle(status: 'TODO' | 'DOING' | 'DONE', id: number) {
     this.$store.dispatch('DeleteTodo', {
       id: id,
-      state: state
+      status: status
     })
   }
 
