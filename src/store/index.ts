@@ -8,7 +8,7 @@ type Todo = {
   title: string;
   id: number;
   priority: 'HIGH' | 'MEDIUM' | 'LOW';
-  state: 'TODO' | 'DOING' | 'DONE';
+  status: 'TODO' | 'DOING' | 'DONE';
 }
 
 
@@ -21,12 +21,12 @@ export default new Vuex.Store({
   },
 
   mutations: {
-    addTodo(state, newTodo) {
+    create(state, newTodo) {
       const todo = {
         title: '',
         id: 0,
         priority: 'LOW' as 'HIGH' | 'MEDIUM' | 'LOW',
-        state: 'TODO' as 'TODO'
+        status: 'TODO' as 'TODO'
       }
       todo.title = newTodo.title
       todo.priority = newTodo.priority
@@ -35,61 +35,60 @@ export default new Vuex.Store({
       state.idState++
     },
     
-    addDoing(state, id) {
-      for(let i = 0; i < state.todos.length; i++) {
-        if(state.todos[i].id === id) {
-          const todo = {
-            title: state.todos[i].title,
-            id: state.todos[i].id,
-            state: 'DOING' as 'DOING',
-            priority: state.todos[i].priority as 'HIGH' | 'MEDIUM' | 'LOW'
+
+    add(state, todo) {
+      if(todo.status === 'TODO') {
+        for(let i = 0; i < state.todos.length; i++) {
+          if(state.todos[i].id === todo.id) {
+            const todo = {
+              title: state.todos[i].title,
+              id: state.todos[i].id,
+              status: 'DOING' as 'DOING',
+              priority: state.todos[i].priority as 'HIGH' | 'MEDIUM' | 'LOW'
+            }
+            state.doings.push(todo)
+            state.todos.splice(i, 1)
+            break
           }
-          state.doings.push(todo)
-          state.todos.splice(i, 1)
-          break
         }
-      }
-    },
-
-    addDone(state, id) {
-      for(let i = 0; i < state.doings.length; i++) {
-        if(state.doings[i].id === id) {
-          const todo = {
-            title: state.doings[i].title,
-            id: state.doings[i].id,
-            state: 'DONE' as 'DONE',
-            priority: state.doings[i].priority as 'HIGH' | 'MEDIUM' | 'LOW'
+      }else if(todo.status === 'DOING') {
+        for(let i = 0; i < state.doings.length; i++) {
+          if(state.doings[i].id === todo.id) {
+            const todo = {
+              title: state.doings[i].title,
+              id: state.doings[i].id,
+              status: 'DONE' as 'DONE',
+              priority: state.doings[i].priority as 'HIGH' | 'MEDIUM' | 'LOW'
+            }
+            state.dones.push(todo)
+            state.doings.splice(i, 1)
+            break
           }
-          state.dones.push(todo)
-          state.doings.splice(i, 1)
-          break
         }
       }
     },
 
-    deleteTodo(state, id) {
-      for(let i = 0; i < state.todos.length; i++) {
-        if(state.todos[i].id === id) {
-          state.todos.splice(i, 1)
-          break
+    delete(state, todo) {
+      if(todo.status === 'TODO') {
+        for(let i = 0; i < state.todos.length; i++) {
+          if(state.todos[i].id === todo.id) {
+            state.todos.splice(i, 1)
+            break
+          }
         }
-      }
-    },
-    
-    deleteDoing(state, id) {
-      for(let i = 0; i < state.doings.length; i++) {
-        if(state.doings[i].id === id) {
-          state.doings.splice(i, 1)
-          break
+      }else if(todo.status === 'DOING') {
+        for(let i = 0; i < state.doings.length; i++) {
+          if(state.doings[i].id === todo.id) {
+            state.doings.splice(i, 1)
+            break
+          }
         }
-      }
-    },
-
-    deleteDone(state, id) {
-      for(let i = 0; i < state.dones.length; i++) {
-        if(state.dones[i].id === id) {
-          state.dones.splice(i, 1)
-          break
+      }else {
+        for(let i = 0; i < state.dones.length; i++) {
+          if(state.dones[i].id === todo.id) {
+            state.dones.splice(i, 1)
+            break
+          }
         }
       }
     }
@@ -97,29 +96,15 @@ export default new Vuex.Store({
 
   actions: {
     create({ commit }, newTodo) {
-      commit('addTodo', newTodo)
+      commit('create', newTodo)
     },
 
     ToNextState({ commit }, todo) {
-      const id = todo.id
-      const state = todo.state
-      if(state === 'TODO') {
-        commit('addDoing', id)
-      }else if(state === 'DOING') {
-        commit('addDone', id)
-      } 
+      commit('add', todo)
     },
 
     DeleteTodo({ commit }, todo) {
-      const id = todo.id
-      const state = todo.state
-      if(state === 'TODO') {
-        commit('deleteTodo', id)
-      }else if(state === 'DOING') {
-        commit('deleteDoing', id)
-      }else {
-        commit('deleteDone', id)
-      }
+      commit('delete', todo)
     }
   },
   modules: {
