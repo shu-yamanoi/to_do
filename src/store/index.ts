@@ -100,7 +100,7 @@ export default new Vuex.Store({
       commit('addTodo', newTodo)
     },
 
-    toNextState({ commit }, todo) {
+    ToNextState({ commit }, todo) {
       const id = todo.id
       const state = todo.state
       if(state === 'TODO') {
@@ -110,7 +110,7 @@ export default new Vuex.Store({
       } 
     },
 
-    deleteTodo({ commit }, todo) {
+    DeleteTodo({ commit }, todo) {
       const id = todo.id
       const state = todo.state
       if(state === 'TODO') {
