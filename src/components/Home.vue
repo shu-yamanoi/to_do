@@ -88,14 +88,14 @@ import New from './New.vue'
 export default class Home extends Vue {
 
   toNextState(state: 'TODO' | 'DOING', id: number) {
-    this.$store.dispatch('toNextState', {
+    this.$store.dispatch('ToNextState', {
       state: state,
       id: id
     })
   }
 
   deleteTodoHandle(state: 'TODO' | 'DOING' | 'DONE', id: number) {
-    this.$store.dispatch('deleteTodo', {
+    this.$store.dispatch('DeleteTodo', {
       id: id,
       state: state
     })
