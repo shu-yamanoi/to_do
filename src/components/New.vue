@@ -54,7 +54,7 @@ export default class Home extends Vue {
     if(this.newTodo.priority === '') {
       return this.priorityErrorMsg = '選択してください'
     }
-    this.$store.dispatch('create', this.newTodo)
+    this.$store.dispatch('add', this.newTodo)
     this.newTodo.title = ''
     this.newTodo.priority = ''
     this.refs.selectBox.clear()

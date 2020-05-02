@@ -5,18 +5,18 @@
         to do
       </div>
       <ul>
-        <li v-for="todo in todos" :key="todo.id">
+        <li v-for="todoItem in todoItems" :key="todoItem.id">
           <div class="todoList">
-            <div class="todoDeleteButton" @click="deleteTodoHandle(todo.status, todo.id)">
+            <div class="todoDeleteButton" @click="deleteTodoHandle(todoItem.status, todoItem.id)">
               ×
             </div>
             <div class="todoTitle">
-              {{ todo.title }}
+              {{ todoItem.title }}
             </div>
-            <div :class="priorityClass(todo.priority)">
-              {{ todo.priority }}
+            <div :class="priorityClass(todoItem.priority)">
+              {{ todoItem.priority }}
             </div>
-            <div class="toDoing" @click="toNextStatus(todo.status, todo.id)">
+            <div class="toDoing" @click="toNextStatus(todoItem.status, todoItem.id)">
               →
             </div>
           </div>
@@ -29,18 +29,18 @@
         doing
       </div>
       <ul>
-        <li v-for="doing in doings" :key="doing.id">
+        <li v-for="doingItem in doingItems" :key="doingItem.id">
           <div class="todoList">
-            <div class="doingDeleteButton" @click="deleteTodoHandle(doing.status, doing.id)">
+            <div class="doingDeleteButton" @click="deleteTodoHandle(doingItem.status, doingItem.id)">
               ×
             </div>
             <div class="todoTitle">
-              {{ doing.title }}
+              {{ doingItem.title }}
             </div>
-            <div :class="priorityClass(doing.priority)">
-              {{ doing.priority }}
+            <div :class="priorityClass(doingItem.priority)">
+              {{ doingItem.priority }}
             </div>
-            <div class="toDone" @click="toNextStatus(doing.status, doing.id)">
+            <div class="toDone" @click="toNextStatus(doingItem.status, doingItem.id)">
               →
             </div>
           </div>
@@ -52,16 +52,16 @@
         done
       </div>
       <ul>
-        <li v-for="done in dones" :key="done.id">
+        <li v-for="doneItem in doneItems" :key="doneItem.id">
           <div class="todoList">
-            <div class="doneDeleteButton" @click="deleteTodoHandle(done.status, done.id)">
+            <div class="doneDeleteButton" @click="deleteTodoHandle(doneItem.status, doneItem.id)">
               ×
             </div>
             <div class="todoTitle">
-            {{ done.title }}
+            {{ doneItem.title }}
             </div>
-            <div :class="priorityClass(done.priority)">
-              {{ done.priority }}
+            <div :class="priorityClass(doneItem.priority)">
+              {{ doneItem.priority }}
             </div>
           </div>
         </li>
@@ -71,8 +71,9 @@
 </template>
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
-import { mapState, mapActions } from 'vuex'
+import { mapState } from 'vuex'
 import New from './New.vue'
+import { Todo } from '../store/types'
 
 @Component({
 
@@ -81,11 +82,14 @@ import New from './New.vue'
   },
 
   computed: {
-    ...mapState(["todos","doings","dones"])
+    ...mapState(["todos"])
   },
 
 })
 export default class Home extends Vue {
+  
+
+  array = ['a', 'v']
 
   toNextStatus(status: 'TODO' | 'DOING', id: number) {
     this.$store.dispatch('ToNextState', {
@@ -102,13 +106,26 @@ export default class Home extends Vue {
   }
 
   priorityClass(priority: 'HIGH' | 'MEDIUM' | 'LOW'): string {
-    if(priority === 'HIGH') {
-      return 'highPriority'
-    }else if(priority === 'MEDIUM') {
-      return 'mediumPriority'
-    }else {
-      return 'lowPriority'
+    switch(priority) {
+      case 'HIGH':
+        return 'highPriority'
+      case 'MEDIUM':
+        return 'mediumPriority'
+      case 'LOW':
+        return'lowPriority'
     }
+  }
+
+  get todoItems() {
+    return this.$store.state.todos.filter((todo: Todo) => todo.status === 'TODO')
+  }
+
+  get doingItems() {
+    return this.$store.state.todos.filter((todo: Todo) => todo.status === 'DOING')
+  }
+
+  get doneItems() {
+    return this.$store.state.todos.filter((todo: Todo) => todo.status === 'DONE')
   }
 }
 </script>
