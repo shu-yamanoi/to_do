@@ -13,14 +13,11 @@ export default new Vuex.Store({
   mutations: {
     addTodo(state, newTodo) {
       const todo: Todo = {
-        title: '',
-        id: 0,
-        priority: 'LOW',
+        title: newTodo.title,
+        id: state.idState++,
+        priority: newTodo.priority,
         status: 'TODO'
       }
-      todo.title = newTodo.title
-      todo.priority = newTodo.priority
-      todo.id = state.idState++
       state.todos.push(todo)
     },
     
@@ -37,10 +34,25 @@ export default new Vuex.Store({
       }
     },
 
-    delete(state, todo) {
+    deleteTodo(state, todo) {
       const newTodos: Todo[] = state.todos.filter(_todo => _todo.id !== todo.id)
       state.todos.splice(0)
       Array.prototype.push.apply(state.todos, newTodos)
+    },
+
+    updataTodo(state, todo) {
+      for(let i = 0; i < state.todos.length; i++) {
+        if(state.todos[i].id === todo.id) {
+          if(todo.title) {
+            state.todos[i].title = todo.title
+          }else if(todo.priority) {
+            state.todos[i].priority = todo.priority
+          }
+          state.todos.splice(i, 1, state.todos[i])
+          break
+        }
+      }
+
     }
   },
 
@@ -49,12 +61,16 @@ export default new Vuex.Store({
       commit('addTodo', newTodo)
     },
 
-    ToNextState({ commit }, todo) {
+    toNextStatus({ commit }, todo) {
       commit('changeStatus', todo)
     },
 
-    DeleteTodo({ commit }, todo) {
-      commit('delete', todo)
+    delete({ commit }, todo) {
+      commit('deleteTodo', todo)
+    },
+
+    update({ commit }, todo) {
+      commit('updataTodo', todo)
     }
   },
   modules: {

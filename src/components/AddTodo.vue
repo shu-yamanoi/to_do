@@ -1,10 +1,10 @@
 <template>
   <div class="new">
-    <input type="text" class="createTodo" placeholder="新しい項目を追加" v-model="newTodo.title">
+    <input type="text" class="createTodo" placeholder="新しい項目を追加" v-model="newTodo.title" maxlength='20'>
     <div class="errorMessage">
       {{ titleErrorMsg }}
     </div>
-    <SelectBox ref="selectBox" @select="selectPriority($event)" @open="open($event)" @reselect="reselect($event)" class="selectBox" v-model="newTodo.priority"  />
+    <SelectBox ref="selectBox" @select="selectPriority($event)" @open="open($event)" @reselect="reselect($event)" class="selectBox" v-model="newTodo.priority" :isSelected="isSelected" :priority="newTodo.priority"  />
     <div v-if="!isOpen && !isSelected" class="errorMessage">
       {{ priorityErrorMsg }}
     </div>
@@ -45,7 +45,7 @@ export default class Home extends Vue {
     return this.$refs
   }
 
-  createTodoHandle(event: any) {
+  createTodoHandle() {
     this.titleErrorMsg = ''
     this.priorityErrorMsg = ''
     if(this.newTodo.title === '') {
@@ -86,5 +86,11 @@ export default class Home extends Vue {
   .selectBox {
     display: flex;
     justify-content: center;
+  }
+  .errorMessage {
+    margin: 10px 0px;
+  }
+  .createTodoSubmitButton {
+    margin: 30px 0px;
   }
 </style>
