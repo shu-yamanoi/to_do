@@ -3,28 +3,30 @@
     <div v-if="!isOpen && !isSelected" class="dropDownButton" @click="open">
       優先度を選択
     </div>
-    <div v-else-if="!isOpen && isSelected" class="dropDownButton" @click="reselect">
-      {{ priority }}
+    <div v-else-if="!isOpen && nowIsSelected" :class="priorityClass(priority)" @click="reselect">
+      {{ nowPriority }}
     </div>
-    <div v-else-if="isOpen && !isSelected" class="dropDownItems">
-      <ul>
+    <ul v-else-if="isOpen && !nowIsSelected" class="dropDownItems">
         <li @click="select('HIGH')">HIGH</li>
         <li @click="select('MEDIUM')">MEDIUM</li>
         <li @click="select('LOW')">LOW</li>
-      </ul>
-    </div>
+    </ul>
   </div>
 </template>
 <script lang="ts">
-  import { Component, Vue } from 'vue-property-decorator';
+  import { Component, Vue, Prop } from 'vue-property-decorator';
 
 @Component
 export default class SelectBox extends Vue {
-
+  @Prop()
+  priority!: 'HIGH' | 'MEDIUM' | 'LOW'
+  @Prop()
+  isSelected!: boolean
+  
 
   isOpen =  false;
-  isSelected = false;
-  priority = ''
+  nowIsSelected = false;
+  nowPriority = ''
 
   open() {
     this.isOpen = true
@@ -32,9 +34,9 @@ export default class SelectBox extends Vue {
   }
 
   select(priority: 'HIGH' | 'MEDIUM' | 'LOW') {
-    this.priority = priority
+    this.nowPriority = priority
     this.isOpen = false
-    this.isSelected = true
+    this.nowIsSelected = true
     this.$emit('select', {
       priority: priority,
       isOpen: this.isOpen,
@@ -43,36 +45,79 @@ export default class SelectBox extends Vue {
 
   clear() {
     this.isOpen = false
-    this.isSelected = false
+    this.nowIsSelected = false
   }
 
   reselect() {
     this.isOpen = true
-    this.isSelected = false
+    this.nowIsSelected = false
     this.$emit('reselect', this.isOpen)
+  }
+
+  priorityClass(priority: 'HIGH' | 'MEDIUM' | 'LOW'): string {
+    switch(priority) {
+      case 'HIGH':
+        return 'highPriority'
+      case 'MEDIUM':
+        return 'mediumPriority'
+      case 'LOW':
+        return'lowPriority'
+    }
+  }
+  created() {
+    this.nowPriority = this.priority
+    this.nowIsSelected = this.isSelected
   }
 }
 </script>
 <style>
   .dropDownButton {
     border: 1px solid grey;
-    margin: 10px 0px;
-    width: 160px;
+    width: 150px;
+    height: 30px;
+    font-size: 20px;
+    margin: 10px auto;
     display: flex;
     justify-content: center;
     color: grey;
-  }
-
-  .dropDownItems {
-    font-size:20px;
-    border: 1px solid grey;
-    width: 160px;
   }
 
   ul {
     margin: 15px 0px;
     list-style: none;
     padding-right: 36px;
+    font-size: 20px;
     color: grey;
   }
+
+  .highPriority, .mediumPriority, .lowPriority {
+    width: 100px;
+    height: 30px;
+    font-size: 20px;
+    margin: 5px auto;
+  }
+
+  .highPriority {
+    color: red;
+  }
+
+  .mediumPriority {
+    color: green;
+  }
+
+  .lowPriority {
+    color: blue;
+  }
+  .dropDownItems {
+    width: 150px;
+    height: 30px;
+    font-size: 20px;
+    margin: 0px auto 50px;
+  }
+  
+  .selectBox {
+    width: 150px;
+    margin: 5px auto;
+  }
+
 </style>
