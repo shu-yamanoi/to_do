@@ -20,7 +20,6 @@ export default new Vuex.Store({
       }
       state.todos.push(todo)
     },
-    
 
     changeStatus(state, todo) {
       for(let i = 0; i < state.todos.length; i++) {
@@ -52,7 +51,6 @@ export default new Vuex.Store({
           break
         }
       }
-
     }
   },
 
