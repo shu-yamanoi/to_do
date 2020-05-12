@@ -15,7 +15,7 @@
           <div class="prioritySelect">
             <SelectBox :priority="todoItem.priority" :isSelected=true @reselect="reselect($event)" @select="select($event, todoItem.id)" />
           </div>
-          <div v-if="!isOpen" class="toNext" @click="toNextStatusHandle(todoItem.status, todoItem.id)">
+          <div v-if="!isOpen && todoItem.status !== 'DONE'" class="toNext" @click="toNextStatusHandle(todoItem.status, todoItem.id)">
             →
           </div>
         </div>
