@@ -34,21 +34,17 @@ export default new Vuex.Store({
     },
 
     deleteTodo(state, todo) {
-      const newTodos: Todo[] = state.todos.filter(_todo => _todo.id !== todo.id)
-      state.todos.splice(0)
-      Array.prototype.push.apply(state.todos, newTodos)
+      const targetIndex: number = state.todos.findIndex(_todo => _todo.id === todo.id)
+      state.todos.splice(targetIndex, 1)
     },
 
     updataTodo(state, todo) {
-      for(let i = 0; i < state.todos.length; i++) {
-        if(state.todos[i].id === todo.id) {
-          if(todo.title) {
-            state.todos[i].title = todo.title
-          }else if(todo.priority) {
-            state.todos[i].priority = todo.priority
-          }
-          state.todos.splice(i, 1, state.todos[i])
-          break
+      const targetTodo: Todo | undefined = state.todos.find(_todo => _todo.id === todo.id)
+      if(targetTodo) {
+        if(todo.title) {
+          targetTodo.title = todo.title
+        }else if(todo.priority) {
+          targetTodo.priority = todo.priority
         }
       }
     }
@@ -70,7 +66,5 @@ export default new Vuex.Store({
     update({ commit }, todo) {
       commit('updataTodo', todo)
     }
-  },
-  modules: {
   }
 })

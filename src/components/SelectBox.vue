@@ -1,12 +1,12 @@
 <template>
-  <div class="selectBox">
-    <div v-if="!isOpen && !isSelected" class="dropDownButton" @click="open">
+  <div class="select-box">
+    <div v-if="!isOpen && !isSelected" class="drop-down-button" @click="open">
       優先度を選択
     </div>
     <div v-else-if="!isOpen && nowIsSelected" :class="priorityClass(priority)" @click="reselect">
       {{ nowPriority }}
     </div>
-    <ul v-else-if="isOpen && !nowIsSelected" class="dropDownItems">
+    <ul v-else-if="isOpen && !nowIsSelected" class="drop-down-items">
         <li @click="select('HIGH')">HIGH</li>
         <li @click="select('MEDIUM')">MEDIUM</li>
         <li @click="select('LOW')">LOW</li>
@@ -14,7 +14,7 @@
   </div>
 </template>
 <script lang="ts">
-  import { Component, Vue, Prop } from 'vue-property-decorator';
+import { Component, Vue, Prop } from 'vue-property-decorator';
 
 @Component
 export default class SelectBox extends Vue {
@@ -38,7 +38,7 @@ export default class SelectBox extends Vue {
     this.isOpen = false
     this.nowIsSelected = true
     this.$emit('select', {
-      priority: priority,
+      priority,
       isOpen: this.isOpen,
     })
   }
@@ -70,8 +70,8 @@ export default class SelectBox extends Vue {
   }
 }
 </script>
-<style>
-  .dropDownButton {
+<style scoped>
+  .drop-down-button {
     border: 1px solid grey;
     width: 150px;
     height: 30px;
@@ -90,32 +90,32 @@ export default class SelectBox extends Vue {
     color: grey;
   }
 
-  .highPriority, .mediumPriority, .lowPriority {
+  .high-priority, .medium-priority, .low-priority {
     width: 100px;
     height: 30px;
     font-size: 20px;
     margin: 5px auto;
   }
 
-  .highPriority {
+  .high-priority {
     color: red;
   }
 
-  .mediumPriority {
+  .medium-priority {
     color: green;
   }
 
-  .lowPriority {
+  .low-priority {
     color: blue;
   }
-  .dropDownItems {
+  .drop-down-items {
     width: 150px;
     height: 30px;
     font-size: 20px;
     margin: 0px auto 50px;
   }
   
-  .selectBox {
+  .select-box {
     width: 150px;
     margin: 5px auto;
   }

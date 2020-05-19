@@ -1,7 +1,7 @@
 <template>
-  <div class="editTitleForm">
-    <input class="titleForm" :value="_value" @blur="inputTitle" maxlength='20'>
-    <span class="errorMessage">{{ errorMsg }}</span>
+  <div>
+    <input class="title-form" :value="_value" @blur="inputTitle" maxlength='20'>
+    <span class="error-message">{{ errorMsg }}</span>
   </div>
 </template>
 <script lang="ts">
@@ -33,15 +33,15 @@ export default class EditTitleForm extends Vue {
   }
 }
 </script>
-<style>
-  .titleForm {
+<style scoped>
+  .title-form {
     border: 1px solid transparent;
     font-size: 20px;
     height: 25px;
     width: 150px;
   }
   
-  .errorMessage {
+  .error-message {
     height: 10px;
     font-size: 15px;
     color: red;

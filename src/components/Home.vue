@@ -1,8 +1,8 @@
 <template>
-  <div class="Home">
-    <div v-for="(status, index) in statuses" :key="index" class="todoTable">
+  <div class="home">
+    <div v-for="(status, index) in statuses" :key="index" class="todo-table">
       <TodoList :status="status">
-        <div v-if="status ==='TODO'" class="addTodo">
+        <div v-if="status ==='TODO'" class="add-todo">
           <AddTodo />
         </div>
       </TodoList>
@@ -25,9 +25,9 @@ export default class Home extends Vue {
   statuses = ['TODO', 'DOING', 'DONE']
 }
 </script>
-<style>
+<style scoped>
 
-  .Home {
+  .home {
     display: flex;
     flex-flow: row nowrap;
     justify-content: space-between;
@@ -35,7 +35,7 @@ export default class Home extends Vue {
     height: 100%;
   }
 
-  .todoTable {
+  .todo-table {
     margin: 0px 60px;
     height: 100vh;
     padding: 0px, 20px;
@@ -43,7 +43,7 @@ export default class Home extends Vue {
   }
 
 
-  .addTodo {
+  .add-todo {
     margin: 60px 0px;
   }
 </style>

@@ -1,21 +1,21 @@
 <template>
   <div>
-    <div class="todoHeader">
+    <div class="todo-header">
       {{ todoHeader }}
     </div>
     <ul>
       <li v-for="todoItem in todoItems" :key="todoItem.id">
-        <div class="todoList">
-          <div class="todoDeleteButton" @click="deleteTodoHandle(todoItem.status, todoItem.id)">
+        <div class="todo-list">
+          <div class="todo-delete-button" @click="deleteTodoHandle(todoItem)">
             ×
           </div>
-          <div class="todoTitle">
+          <div class="todo-title">
             <editTitleForm :value="todoItem.title" @input="updateTitle($event, todoItem.id)" />
           </div>
-          <div class="prioritySelect">
+          <div class="priority-select">
             <SelectBox :priority="todoItem.priority" :isSelected=true @reselect="reselect($event)" @select="select($event, todoItem.id)" />
           </div>
-          <div v-if="!isOpen && todoItem.status !== 'DONE'" class="toNext" @click="toNextStatusHandle(todoItem.status, todoItem.id)">
+          <div v-if="!isOpen && todoItem.status !== 'DONE'" class="to-next" @click="toNextStatusHandle(todoItem.status, todoItem.id)">
             →
           </div>
         </div>
@@ -53,22 +53,19 @@ export default class TodoList extends Vue {
 
   toNextStatusHandle(status: 'TODO' | 'DOING', id: number) {
     this.$store.dispatch('toNextStatus', {
-      status: status,
-      id: id
+      status,
+      id
     })
   }
 
-  deleteTodoHandle(status: 'TODO' | 'DOING' | 'DONE', id: number) {
-    this.$store.dispatch('delete', {
-      id: id,
-      status: status
-    })
+  deleteTodoHandle(todoItem: Todo) {
+    this.$store.dispatch('delete', todoItem)
   }
 
   updateTitle(title: string, id: number) {
     this.$store.dispatch('update', {
-      title: title,
-      id: id
+      title,
+      id
     })
   }
 
@@ -89,7 +86,7 @@ export default class TodoList extends Vue {
 
   select(event: any, id: number) {
     this.$store.dispatch('update', {
-      id: id,
+      id,
       priority: event.priority
     })
     this.isOpen = event.isOpen
@@ -107,28 +104,14 @@ export default class TodoList extends Vue {
   }
 
   get todoItems() {
-    switch (this.status) {
-      case('DOING'):
-        return this.$store.state.todos.filter((todo: Todo) => todo.status === 'DOING') 
-      case('DONE'):
-        return this.$store.state.todos.filter((todo: Todo) => todo.status === 'DONE')
-      default:
-        return this.$store.state.todos.filter((todo: Todo) => todo.status === 'TODO')
-    }
+    return this.$store.state.todos.filter((todo: Todo) => todo.status === this.status) 
   }
 }
 </script>
-<style>
-  .todoHeader {
+<style scoped>
+  .todo-header {
     font-size: 40px;
     padding: 0px, 20px;
-  }
-
-  .inputNewContentsDiscription {
-    height: 50px;
-    width: 125px;
-    margin-bottom: 20px;
-    font-size: 20px;
   }
 
   ul {
@@ -136,17 +119,17 @@ export default class TodoList extends Vue {
     list-style-type: none;
   }
 
-  .errorMessage {
+  .error-message {
     color: red;
   }
 
-  .todoList {
+  .todo-list {
     display: flex;
     flex-flow: row nowrap;
     margin-top: 40px;
   }
 
-  .toNext {
+  .to-next {
     float: right;
     margin-bottom: 30px;
     margin-left: auto;
@@ -158,17 +141,17 @@ export default class TodoList extends Vue {
     margin-bottom: 10px;
   }
 
-  .todoTitle {
+  .todo-title {
     font-size: 25px;
   }
 
-  .todoDeleteButton {
+  .todo-delete-button {
     font-size: 25px;
     color:red;
     margin-right: 10px;
   }
 
-  .prioritySelect {
+  .priority-select {
     height: 40px;
     margin-bottom: 20px;
   }

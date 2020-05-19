@@ -1,14 +1,14 @@
 <template>
-  <div class="new">
-    <input type="text" class="createTodo" placeholder="新しい項目を追加" v-model="newTodo.title" maxlength='20'>
-    <div class="errorMessage">
+  <div>
+    <input type="text" class="create-todo" placeholder="新しい項目を追加" v-model="newTodo.title" maxlength='20'>
+    <div class="error-message">
       {{ titleErrorMsg }}
     </div>
-    <SelectBox ref="selectBox" @select="selectPriority($event)" @open="open($event)" @reselect="reselect($event)" class="selectBox" v-model="newTodo.priority" :isSelected="isSelected" :priority="newTodo.priority"  />
-    <div v-if="!isOpen && !isSelected" class="errorMessage">
+    <SelectBox ref="selectBox" @select="selectPriority($event)" @open="open($event)" @reselect="reselect($event)" class="select-box" v-model="newTodo.priority" :isSelected="isSelected" :priority="newTodo.priority"  />
+    <div v-if="!isOpen && !isSelected" class="error-message">
       {{ priorityErrorMsg }}
     </div>
-    <div v-if="!isOpen" class="createTodoSubmitButton" @click="createTodoHandle">
+    <div v-if="!isOpen" class="create-todo-submit-button" @click="createTodoHandle">
       追加
     </div>
   </div>
@@ -77,20 +77,20 @@ export default class Home extends Vue {
   }
 }
 </script>
-<style>
-  .createTodo {
+<style scoped>
+  .create-todo {
     margin-top: 30px;
     font-size: 20px;
   }
 
-  .selectBox {
+  .select-box {
     display: flex;
     justify-content: center;
   }
-  .errorMessage {
+  .error-message {
     margin: 10px 0px;
   }
-  .createTodoSubmitButton {
+  .create-todo-submit-button {
     margin: 30px 0px;
   }
 </style>
