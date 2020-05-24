@@ -3,6 +3,7 @@
     <div class="todo-header">
       {{ todoHeader }}
     </div>
+    <slot />
     <ul>
       <li v-for="todoItem in todoItems" :key="todoItem.id">
         <div class="todo-list">
@@ -21,7 +22,6 @@
         </div>
       </li>
     </ul>
-    <slot />
   </div>
 </template>
 <script lang="ts">
@@ -156,6 +156,5 @@ export default class TodoList extends Vue {
 
   .priority-select {
     height: 40px;
-    margin-bottom: 20px;
   }
 </style>

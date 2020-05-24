@@ -49,6 +49,6 @@ export default class Home extends Vue {
 
 
   .add-todo {
-    margin: 60px 0px;
+    margin: 20px 0 60px;
   }
 </style>

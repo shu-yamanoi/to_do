@@ -75,8 +75,8 @@ export default class SelectBox extends Vue {
     border: 1px solid grey;
     width: 150px;
     height: 30px;
-    font-size: 20px;
-    margin: 10px auto;
+    font-size: 17px;
+    margin: 0px auto;
     display: flex;
     justify-content: center;
     color: grey;
@@ -95,7 +95,7 @@ export default class SelectBox extends Vue {
     width: 100px;
     height: 30px;
     font-size: 20px;
-    margin: 5px auto;
+    margin: 0px auto;
     cursor: pointer;
   }
 

@@ -1,15 +1,19 @@
 <template>
-  <div>
-    <input type="text" class="create-todo" placeholder="新しい項目を追加" v-model="newTodo.title" maxlength='20'>
-    <div class="error-message">
-      {{ titleErrorMsg }}
+  <div class="add-todo">
+    <div>
+      <input type="text" class="create-todo" placeholder="新しい項目を追加" v-model="newTodo.title" maxlength='20'>
+      <div class="error-message">
+        {{ titleErrorMsg }}
+      </div>
     </div>
-    <SelectBox ref="selectBox" @select="selectPriority($event)" @open="open($event)" @reselect="reselect($event)" class="select-box" v-model="newTodo.priority" :isSelected="isSelected" :priority="newTodo.priority"  />
-    <div v-if="!isOpen && !isSelected" class="error-message">
-      {{ priorityErrorMsg }}
+    <div>
+      <SelectBox ref="selectBox" @select="selectPriority($event)" @open="open($event)" @reselect="reselect($event)" class="select-box" v-model="newTodo.priority" :isSelected="isSelected" :priority="newTodo.priority"  />
+      <div v-if="!isOpen && !isSelected" class="error-message">
+        {{ priorityErrorMsg }}
+      </div>
     </div>
-    <div v-if="!isOpen" class="create-todo-submit-button" @click="createTodoHandle">
-      追加
+    <div class="create-todo-submit-button" @click="createTodoHandle">
+      add
     </div>
   </div>
 </template>
@@ -78,20 +82,34 @@ export default class Home extends Vue {
 }
 </script>
 <style scoped>
+  .add-todo {
+    display: flex;
+  }
+
   .create-todo {
-    margin-top: 30px;
-    font-size: 20px;
+    font-size: 17px;
+    height: 25px;
+    margin-top: 15px;
+    margin-right: 10px;
   }
 
   .select-box {
     display: flex;
     justify-content: center;
+    height: 25px;
+    margin-top: 15px;
   }
   .error-message {
-    margin: 10px 0px;
+    margin: 20px 0px;
   }
   .create-todo-submit-button {
-    margin: 30px 0px;
+    margin: 15px 10px;
     cursor: pointer;
+    font-size: 20px;
+    font-weight: bold;
+    background-color: lightgreen;
+    height: 30px;
+    padding: 0px 20px;
+    border: 1px solid green;
   }
 </style>
