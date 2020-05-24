@@ -106,6 +106,7 @@ export default class TodoList extends Vue {
   get todoItems() {
     return this.$store.state.todos.filter((todo: Todo) => todo.status === this.status) 
   }
+
 }
 </script>
 <style scoped>

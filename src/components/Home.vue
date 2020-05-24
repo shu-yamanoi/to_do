@@ -23,7 +23,12 @@ import AddTodo from './AddTodo.vue'
 })
 export default class Home extends Vue {
   statuses = ['TODO', 'DOING', 'DONE']
+
+  created() {
+    this.$store.dispatch('doSetState')
+  }
 }
+
 </script>
 <style scoped>
 

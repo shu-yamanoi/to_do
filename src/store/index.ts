@@ -7,18 +7,21 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     todos: [] as Todo[],
-    idState: 0
   },
 
   mutations: {
     addTodo(state, newTodo) {
+      let idState = Number(localStorage.getItem('idState'))
       const todo: Todo = {
         title: newTodo.title,
-        id: state.idState++,
+        id: idState,
         priority: newTodo.priority,
         status: 'TODO'
       }
+      idState++
       state.todos.push(todo)
+      localStorage.setItem('allState', JSON.stringify(state))
+      localStorage.setItem('idState', idState.toString())
     },
 
     changeStatus(state, todo) {
@@ -28,6 +31,7 @@ export default new Vuex.Store({
             ? 'DOING'
             : 'DONE'
           state.todos.splice(i, 1, state.todos[i])
+          localStorage.setItem('allState', JSON.stringify(state))
           break
         }
       }
@@ -36,6 +40,7 @@ export default new Vuex.Store({
     deleteTodo(state, todo) {
       const targetIndex: number = state.todos.findIndex(_todo => _todo.id === todo.id)
       state.todos.splice(targetIndex, 1)
+      localStorage.setItem('allState', JSON.stringify(state))
     },
 
     updataTodo(state, todo) {
@@ -46,6 +51,14 @@ export default new Vuex.Store({
         }else if(todo.priority) {
           targetTodo.priority = todo.priority
         }
+      localStorage.setItem('allState', JSON.stringify(state))
+      }
+    },
+
+    setTodo(state) {
+      if(localStorage.getItem('allState')) {
+        const allState = JSON.parse(localStorage.getItem('allState') as string)
+        this.replaceState(allState)
       }
     }
   },
@@ -65,6 +78,11 @@ export default new Vuex.Store({
 
     update({ commit }, todo) {
       commit('updataTodo', todo)
+    },
+
+    doSetState({ commit }) {
+      commit('setTodo')
     }
   }
 })
+
