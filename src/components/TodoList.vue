@@ -136,6 +136,7 @@ export default class TodoList extends Vue {
     margin-left: auto;
     color: green;
     font-size: 25px;
+    cursor: pointer;
   }
 
   li {
@@ -150,6 +151,7 @@ export default class TodoList extends Vue {
     font-size: 25px;
     color:red;
     margin-right: 10px;
+    cursor: pointer;
   }
 
   .priority-select {

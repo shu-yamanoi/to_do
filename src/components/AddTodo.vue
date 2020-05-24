@@ -92,5 +92,6 @@ export default class Home extends Vue {
   }
   .create-todo-submit-button {
     margin: 30px 0px;
+    cursor: pointer;
   }
 </style>
