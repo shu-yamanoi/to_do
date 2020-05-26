@@ -23,7 +23,12 @@ import AddTodo from './AddTodo.vue'
 })
 export default class Home extends Vue {
   statuses = ['TODO', 'DOING', 'DONE']
+
+  created() {
+    this.$store.dispatch('doSetState')
+  }
 }
+
 </script>
 <style scoped>
 
@@ -43,6 +48,6 @@ export default class Home extends Vue {
   }
 
   .add-todo {
-    margin: 60px 0px;
+    margin: 20px 0 60px;
   }
 </style>

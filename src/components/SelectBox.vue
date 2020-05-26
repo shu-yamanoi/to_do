@@ -57,11 +57,11 @@ export default class SelectBox extends Vue {
   priorityClass(priority: 'HIGH' | 'MEDIUM' | 'LOW'): string {
     switch(priority) {
       case 'HIGH':
-        return 'highPriority'
+        return 'high-priority'
       case 'MEDIUM':
-        return 'mediumPriority'
+        return 'medium-priority'
       case 'LOW':
-        return'lowPriority'
+        return'low-priority'
     }
   }
   created() {
@@ -75,11 +75,12 @@ export default class SelectBox extends Vue {
     border: 1px solid grey;
     width: 150px;
     height: 30px;
-    font-size: 20px;
-    margin: 10px auto;
+    font-size: 17px;
+    margin: 0px auto;
     display: flex;
     justify-content: center;
     color: grey;
+    cursor: pointer;
   }
 
   ul {
@@ -94,7 +95,8 @@ export default class SelectBox extends Vue {
     width: 100px;
     height: 30px;
     font-size: 20px;
-    margin: 5px auto;
+    margin: 0px auto;
+    cursor: pointer;
   }
 
   .high-priority {
@@ -113,6 +115,7 @@ export default class SelectBox extends Vue {
     height: 30px;
     font-size: 20px;
     margin: 0px auto 50px;
+    cursor: pointer;
   }
   
   .select-box {
