@@ -6,7 +6,6 @@ Vue.use(Vuex)
 
 const TODO_KEY  = 'todo'
 const ID_KEY = 'todoId'
-const allTodo = JSON.parse(localStorage.getItem(TODO_KEY) as string)
 
 export default new Vuex.Store({
   state: {
@@ -60,6 +59,7 @@ export default new Vuex.Store({
     },
 
     setTodo(state) {
+      const allTodo = JSON.parse(localStorage.getItem(TODO_KEY) as string)
       if(allTodo) {
         this.replaceState(allTodo)
       }
