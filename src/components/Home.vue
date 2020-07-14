@@ -33,8 +33,6 @@ export default class Home extends Vue {
 <style scoped>
 
   .home {
-    display: flex;
-    flex-flow: row nowrap;
     justify-content: space-between;
     margin-right: 50px;
     height: 100%;
