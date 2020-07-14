@@ -102,14 +102,4 @@ export default class Home extends Vue {
   .error-message {
     margin: 20px 0px;
   }
-  .create-todo-submit-button {
-    margin: 15px 10px;
-    cursor: pointer;
-    font-size: 20px;
-    font-weight: bold;
-    background-color: lightgreen;
-    height: 30px;
-    padding: 0px 20px;
-    border: 1px solid green;
-  }
 </style>
