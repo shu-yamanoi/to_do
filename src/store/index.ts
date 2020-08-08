@@ -1,127 +1,91 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import { Todo } from './types'
 
 Vue.use(Vuex)
 
-
-type Todo = {
-  title: string;
-  id: number;
-  priority: 'HIGH' | 'MEDIUM' | 'LOW';
-  state: 'TODO' | 'DOING' | 'DONE';
-}
-
+const TODO_KEY  = 'todo'
+const ID_KEY = 'todoId'
 
 export default new Vuex.Store({
   state: {
     todos: [] as Todo[],
-    doings: [] as Todo[],
-    dones: [] as Todo[],
-    idState: 0 as number
   },
 
   mutations: {
     addTodo(state, newTodo) {
-      const todo = {
-        title: '',
-        id: 0,
-        priority: 'LOW' as 'HIGH' | 'MEDIUM' | 'LOW',
-        state: 'TODO' as 'TODO'
+      let id = Number(localStorage.getItem(ID_KEY))
+      const todo: Todo = {
+        title: newTodo.title,
+        id: id,
+        priority: newTodo.priority,
+        status: 'TODO'
       }
-      todo.title = newTodo.title
-      todo.priority = newTodo.priority
-      todo.id = state.idState
+      id++
       state.todos.push(todo)
-      state.idState++
+      localStorage.setItem(TODO_KEY, JSON.stringify(state))
+      localStorage.setItem(ID_KEY, id.toString())
     },
-    
-    addDoing(state, id) {
+
+    changeStatus(state, todo) {
       for(let i = 0; i < state.todos.length; i++) {
-        if(state.todos[i].id === id) {
-          const todo = {
-            title: state.todos[i].title,
-            id: state.todos[i].id,
-            state: 'DOING' as 'DOING',
-            priority: state.todos[i].priority as 'HIGH' | 'MEDIUM' | 'LOW'
-          }
-          state.doings.push(todo)
-          state.todos.splice(i, 1)
+        if(state.todos[i].id === todo.id) {
+          state.todos[i].status = todo.status === 'TODO' 
+            ? 'DOING'
+            : 'DONE'
+          state.todos.splice(i, 1, state.todos[i])
+          localStorage.setItem(TODO_KEY, JSON.stringify(state))
           break
         }
       }
     },
 
-    addDone(state, id) {
-      for(let i = 0; i < state.doings.length; i++) {
-        if(state.doings[i].id === id) {
-          const todo = {
-            title: state.doings[i].title,
-            id: state.doings[i].id,
-            state: 'DONE' as 'DONE',
-            priority: state.doings[i].priority as 'HIGH' | 'MEDIUM' | 'LOW'
-          }
-          state.dones.push(todo)
-          state.doings.splice(i, 1)
-          break
+    deleteTodo(state, todo) {
+      const targetIndex: number = state.todos.findIndex(_todo => _todo.id === todo.id)
+      state.todos.splice(targetIndex, 1)
+      localStorage.setItem(TODO_KEY, JSON.stringify(state))
+    },
+
+    updataTodo(state, todo) {
+      const targetTodo: Todo | undefined = state.todos.find(_todo => _todo.id === todo.id)
+      if(targetTodo) {
+        if(todo.title) {
+          targetTodo.title = todo.title
+        }else if(todo.priority) {
+          targetTodo.priority = todo.priority
         }
+      localStorage.setItem(TODO_KEY, JSON.stringify(state))
       }
     },
 
-    deleteTodo(state, id) {
-      for(let i = 0; i < state.todos.length; i++) {
-        if(state.todos[i].id === id) {
-          state.todos.splice(i, 1)
-          break
-        }
-      }
-    },
-    
-    deleteDoing(state, id) {
-      for(let i = 0; i < state.doings.length; i++) {
-        if(state.doings[i].id === id) {
-          state.doings.splice(i, 1)
-          break
-        }
-      }
-    },
-
-    deleteDone(state, id) {
-      for(let i = 0; i < state.dones.length; i++) {
-        if(state.dones[i].id === id) {
-          state.dones.splice(i, 1)
-          break
-        }
+    setTodo(state) {
+      const allTodo = JSON.parse(localStorage.getItem(TODO_KEY) as string)
+      if(allTodo) {
+        this.replaceState(allTodo)
       }
     }
   },
 
   actions: {
-    create({ commit }, newTodo) {
+    add({ commit }, newTodo) {
       commit('addTodo', newTodo)
     },
 
-    toNextState({ commit }, todo) {
-      const id = todo.id
-      const state = todo.state
-      if(state === 'TODO') {
-        commit('addDoing', id)
-      }else if(state === 'DOING') {
-        commit('addDone', id)
-      } 
+    toNextStatus({ commit }, todo) {
+      commit('changeStatus', todo)
     },
 
-    deleteTodo({ commit }, todo) {
-      const id = todo.id
-      const state = todo.state
-      if(state === 'TODO') {
-        commit('deleteTodo', id)
-      }else if(state === 'DOING') {
-        commit('deleteDoing', id)
-      }else {
-        commit('deleteDone', id)
-      }
+    delete({ commit }, todo) {
+      commit('deleteTodo', todo)
+    },
+
+    update({ commit }, todo) {
+      commit('updataTodo', todo)
+    },
+
+    doSetState({ commit }) {
+      commit('setTodo')
     }
-  },
-  modules: {
   }
 })
+
